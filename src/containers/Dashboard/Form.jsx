@@ -16,7 +16,13 @@ import dayjs from 'dayjs';
 
 
 
-const theme = createTheme();
+const theme = createTheme({
+    typography: {
+        fontFamily: [
+            'QuickSand',
+        ].join(','),
+    },
+});
 
 export default function SignUp({ dataXS, setData }) {
     const [crimeType, setCrimeType] = useState()
@@ -65,7 +71,9 @@ export default function SignUp({ dataXS, setData }) {
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <SecurityIcon />
                     </Avatar>
-                    <Typography component="h1" variant="h5">
+                    <Typography component="h1" sx={{
+                        fontFamily: 'QuickSand', fontWeight: '600', fontSize: 30
+                    }} variant="h5">
                         Crime Form
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
