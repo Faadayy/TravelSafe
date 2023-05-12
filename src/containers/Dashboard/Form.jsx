@@ -11,23 +11,42 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
+import { DatePicker, TimePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SignUp({ dataXS, setData }) {
     const [crimeType, setCrimeType] = useState()
+    const [date, setDate] = useState()
+    const [time, setTime] = useState()
+
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            name: data.get('Name'),
-            crimeLocation: data.get('crimeLocation'),
-            email: data.get('email'),
-            password: data.get('password'),
+        if (data.get('crimeLocation')
+            && data.get('moreDetail')
+            && data.get('name')
+            && crimeType
+            && date
+            && time
+        ) {
 
-        });
+            const forbObj = {
+                name: data.get('name'),
+                crimeLocation: data.get('crimeLocation'),
+                moreDetail: data.get('moreDetail'),
+                crimeType: crimeType.target.value,
+                date: dayjs(date).format('DD/MM/YYYY'),
+                time: dayjs(time).format('HH:mm')
+            }
+
+            setData([...dataXS, forbObj]);
+
+        }
     };
 
     return (
@@ -36,7 +55,8 @@ export default function SignUp() {
                 <CssBaseline />
                 <Box
                     sx={{
-                        marginTop: 8,
+                        marginTop: 5,
+                        marginBottom: 10,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -48,11 +68,11 @@ export default function SignUp() {
                     <Typography component="h1" variant="h5">
                         Crime Form
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} >
                                 <TextField
-                                    autoComplete="given-name"
+                                    autoComplete="name"
                                     name="name"
                                     required
                                     fullWidth
@@ -62,29 +82,13 @@ export default function SignUp() {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Crime Type</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={crimeType}
-                                        label="Crime Type"
-                                        onChange={setCrimeType}
-                                    >
-                                        <MenuItem value={'Mobile'}>Mobile</MenuItem>
-                                        <MenuItem value={'Car'}>Car</MenuItem>
-                                        <MenuItem value={'Bike'}>Bike</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12} >
                                 <TextField
                                     autoComplete="crime-location"
                                     name="crimeLocation"
                                     required
                                     fullWidth
                                     multiline={true}
-                                    minRows={3}
+                                    minRows={2}
                                     id="crimeLocation"
                                     label="Crime Location"
                                     autoFocus
@@ -96,42 +100,39 @@ export default function SignUp() {
                                     name="moreDetail"
                                     fullWidth
                                     multiline={true}
-                                    minRows={3}
+                                    minRows={2}
                                     id="moreDetail"
                                     label="More Detail"
                                     autoFocus
                                 />
                             </Grid>
-                            {/* <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="lastName"
-                                    label="Last Name"
-                                    name="lastName"
-                                    autoComplete="family-name"
-                                />
-                            </Grid> */}
                             <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="new-password"
-                                />
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Crime Type</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={'Mobile'}
+                                        label="Crime Type"
+                                        onChange={setCrimeType}
+                                    >
+                                        <MenuItem value={'Mobile'}>Mobile</MenuItem>
+                                        <MenuItem value={'Car'}>Car</MenuItem>
+                                        <MenuItem value={'Bike'}>Bike</MenuItem>
+                                    </Select>
+                                    <div style={{ marginTop: '1rem' }} />
+                                    <DatePicker
+                                        label={'Crime Date'}
+                                        value={date}
+                                        onChange={(newValue) => setDate(newValue)}
+                                    />
+                                    <div style={{ marginTop: '1rem' }} />
+                                    <TimePicker
+                                        label={'Crime Time'}
+                                        value={time}
+                                        onChange={(newValue) => setTime(newValue)}
+                                    />
+                                </FormControl>
                             </Grid>
 
                         </Grid>
