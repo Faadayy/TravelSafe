@@ -48,7 +48,6 @@ const Seperator = styled.div`
 export function Navbar({ useTransparent, mode = 'alpha' }) {
 
   const isMobile = useMediaQuery({ maxWidth: deviceSize.mobile });
-  console.log('redddd');
   return (
     <>
       <NavbarContainer useTransparent={useTransparent}>
