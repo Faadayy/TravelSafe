@@ -9,7 +9,7 @@ import SecurityIcon from '@mui/icons-material/Security';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Alert, AlertTitle, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
@@ -28,6 +28,7 @@ export default function SignUp({ dataXS, setData }) {
     const [crimeType, setCrimeType] = useState()
     const [date, setDate] = useState()
     const [time, setTime] = useState()
+    const [alert, setAlert] = useState(false)
 
 
     const handleSubmit = (event) => {
@@ -40,7 +41,7 @@ export default function SignUp({ dataXS, setData }) {
             && date
             && time
         ) {
-
+            console.log({ data: 'datatatattatatatatatatat' })
             const forbObj = {
                 name: data.get('name'),
                 crimeLocation: data.get('crimeLocation'),
@@ -51,7 +52,11 @@ export default function SignUp({ dataXS, setData }) {
             }
 
             setData([...dataXS, forbObj]);
-
+        } else {
+            setAlert(true)
+            setTimeout(() => {
+                setAlert(false)
+            }, 10000);
         }
     };
 
@@ -120,7 +125,6 @@ export default function SignUp({ dataXS, setData }) {
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        value={'Mobile'}
                                         label="Crime Type"
                                         onChange={setCrimeType}
                                     >
@@ -152,7 +156,13 @@ export default function SignUp({ dataXS, setData }) {
                         >
                             Upload
                         </Button>
-
+                        {alert && <>
+                            <Alert severity="warning">
+                                <AlertTitle>Warning</AlertTitle>
+                                Please Fill all the fields. — <strong>Recheck all the fields</strong>
+                            </Alert>
+                        </>
+                        }
                     </Box>
                 </Box>
             </Container>
